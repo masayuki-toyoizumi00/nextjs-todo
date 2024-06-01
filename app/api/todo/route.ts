@@ -8,31 +8,16 @@ export async function GET() {
   return NextResponse.json(notes);
 }
 
-// export async function POST(request: NextRequest) {
-//   const { content } = await request.json();
-
-//   await prisma.todo.create({
-//     data: {
-//       content: content,
-//     },
-//   });
-
-//   const notes = await getAllNotes();
-//   return NextResponse.json(notes);
-// }
-
-// export async function DELETE(request: NextRequest) {
-//   const id = parseInt(request.nextUrl.searchParams.get('id')!);
-
-//   await prisma.notes.delete({
-//     where: {
-//       id: id,
-//     },
-//   });
-
-//   const notes = await getAllNotes();
-//   return NextResponse.json(notes);
-// }
+export async function POST(request: Request) {
+  const { title }: { title: string } = await request.json()
+  // todoテーブルに追加
+  const response = await prisma.todo.create({
+    data: {
+      title,
+    },
+  })
+  return Response.json(response)
+}
 
 async function getAllTodos() {
   const notes = await prisma.todo.findMany();
